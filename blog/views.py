@@ -1,10 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from .models import Post
+from .models import Post, Comment
 from .forms import CommentCreationForm
 from django.contrib.auth.models import User
-
+from django.contrib.auth.decorators import login_required
 
 class PostListView(ListView):
     model = Post
@@ -91,3 +91,16 @@ def add_comment_to_post(request, pk):
         form = CommentCreationForm()
     return render(request, "blog/post_add_comment.html", {"form": form})
 
+
+@login_required
+def comment_approve(request, pk):
+    comment = get_object_or_404(Comment, pk=pk)
+    comment.approve()
+    return redirect('post-detail', pk=comment.post.pk)
+
+
+@login_required
+def comment_remove(request, pk):
+    comment = get_object_or_404(Comment, pk=pk)
+    comment.delete()
+    return redirect('post-detail', pk=comment.post.pk)

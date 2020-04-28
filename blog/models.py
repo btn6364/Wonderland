@@ -22,7 +22,6 @@ class Comment(models.Model):
         Post, on_delete=models.CASCADE, related_name="comments")
     author = models.CharField(max_length=100, default="")
     profile_pic = models.ImageField(default="default.png")
-    # user = models.ForeignKey(User, related_name="comments", on_delete=models.CASCADE)
     text = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
     approved_comment = models.BooleanField(default=False)

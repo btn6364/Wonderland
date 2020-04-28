@@ -9,6 +9,8 @@ class Post(models.Model):
     content = models.TextField()
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
+    likes= models.IntegerField(default=0)
+    dislikes= models.IntegerField(default=0)
 
     def __str__(self):
         return self.title
@@ -20,8 +22,6 @@ class Post(models.Model):
 class Comment(models.Model):
     post = models.ForeignKey(
         Post, on_delete=models.CASCADE, related_name="comments")
-    # author = models.CharField(max_length=100, default="")
-    # profile_pic = models.ImageField(default="default.png")
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
@@ -34,31 +34,17 @@ class Comment(models.Model):
     def __str__(self):
         return self.text
 
+class Preference(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    value = models.IntegerField() #value for like (1) and dislike (2)
+    date = models.DateTimeField(auto_now= True)
 
-class Like(models.Model):
-    """
-        Like posts
-    """
-    post = models.OneToOneField(
-        Post, related_name="likes", on_delete=models.CASCADE)
-    users = models.ManyToManyField(User, related_name='requirement_post_likes')
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
+    
     def __str__(self):
-        return self.post.content[:30]
+        return str(self.user) + '-' + str(self.post.title) +'-' + str(self.value)
+
+    class Meta:
+       unique_together = ("user", "post", "value")
 
 
-class Dislike(models.Model):
-    """
-         Dislike posts
-    """
-    post = models.OneToOneField(
-        Post, related_name="dislikes", on_delete=models.CASCADE)
-    users = models.ManyToManyField(
-        User, related_name='requirement_post_dislikes')
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return self.post.content[:30]

@@ -29,15 +29,15 @@
 
 <!-- Render comment here -->
 <ul class="media-list">
-    {% for comment in post.comments.all %}
+    {% for comment in object.comments.all %}
         {% if user.is_authenticated or comment.approved_comment %}
             <li class="media">
-                <img class="rounded-circle article-img pull-left " src="https://bootdey.com/img/Content/user_1.jpg" alt="">
+                <img class="rounded-circle article-img pull-left " src="{{ comment.author.profile.image.url }}" alt="">
                 <div class="media-body">
                     <span class="text-muted pull-right">
                         <small class="date text-muted font-weight-normal">{{ comment.created_date }}</small>
                     </span>
-                    <a href="#"><strong class="text-success">@{{ comment.author }}</strong></a>
+                    <a href="#"><strong class="text-success">@{{ comment.author.username }}</strong></a>
                     <p>
                         {{ comment.text|linebreaks }}
                     </p>

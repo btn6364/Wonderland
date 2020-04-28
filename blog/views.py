@@ -75,9 +75,8 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
             return True
         return False
 
-def about(request):
-    return render(request, "blog/about.html", {"title": "About"})
 
+@login_required
 def add_comment_to_post(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if request.method == "POST":
@@ -93,17 +92,6 @@ def add_comment_to_post(request, pk):
     return render(request, "blog/post_add_comment.html", {"form": form})
 
 
-# class CommentCreateView(LoginRequiredMixin, CreateView):
-#     #<app>/<model>_<viewtype>.html
-#     model = Comment
-#     fields = ["text"]
-
-#     #overide the form_valid to store the author first
-#     def form_valid(self, form):
-#         form.instance.author = self.request.user
-#         return super().form_valid(form)
-
-
 @login_required
 def comment_approve(request, pk):
     comment = get_object_or_404(Comment, pk=pk)
@@ -116,3 +104,7 @@ def comment_remove(request, pk):
     comment = get_object_or_404(Comment, pk=pk)
     comment.delete()
     return redirect('post-detail', pk=comment.post.pk)
+
+
+def about(request):
+    return render(request, "blog/about.html", {"title": "About"})

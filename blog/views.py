@@ -84,7 +84,8 @@ def add_comment_to_post(request, pk):
         if form.is_valid():
             comment = form.save(commit=False)
             comment.post = post
-            comment.author = request.user
+            comment.author = request.user.username
+            comment.profile_pic = request.user.profile.image
             comment.save()
             return redirect('post-detail', pk=post.pk)
     else:

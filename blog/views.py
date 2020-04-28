@@ -92,6 +92,17 @@ def add_comment_to_post(request, pk):
     return render(request, "blog/post_add_comment.html", {"form": form})
 
 
+# class CommentCreateView(LoginRequiredMixin, CreateView):
+#     #<app>/<model>_<viewtype>.html
+#     model = Comment
+#     fields = ["text"]
+
+#     #overide the form_valid to store the author first
+#     def form_valid(self, form):
+#         form.instance.author = self.request.user
+#         return super().form_valid(form)
+
+
 @login_required
 def comment_approve(request, pk):
     comment = get_object_or_404(Comment, pk=pk)

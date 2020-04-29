@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from .models import Post, Comment, Preference
+from django.views.generic.base import RedirectView
+from .models import Post, Comment
 from .forms import CommentCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -79,6 +80,19 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return False
 
 
+#view for add likes
+class PostLikeToggleRedirect(LoginRequiredMixin ,RedirectView):
+    def get_redirect_url(self, *args, **kwargs):
+        post = get_object_or_404(Post, pk=kwargs["pk"])
+        url = post.get_absolute_url()
+        user = self.request.user
+        if user in post.likes.all():
+            post.likes.remove(user)
+        else:    
+            post.likes.add(user)
+        return url
+
+
 @login_required
 def add_comment_to_post(request, pk):
     post = get_object_or_404(Post, pk=pk)
@@ -107,62 +121,6 @@ def comment_remove(request, pk):
     comment = get_object_or_404(Comment, pk=pk)
     comment.delete()
     return redirect('post-detail', pk=comment.post.pk)
-
-
-@login_required
-def post_preference(request, post_id, user_preference):
-    if request.method == "POST":
-        post = get_object_or_404(Post, id=post_id)
-        obj = ''
-        value_obj = ''
-        try:
-            obj = Preference.objects.get(user=request.user, post=post)
-            value_obj = obj.value  # value of user_preference
-            value_obj = int(value_obj)
-            user_preference = int(user_preference)
-            if value_obj != user_preference:
-                obj.delete()
-                upref = Preference()
-                upref.user = request.user
-                upref.post = post
-                upref.value = user_preference
-                if user_preference == 1 and value_obj != 1:
-                    post.likes += 1
-                    post.dislikes -= 1
-                elif user_preference == 2 and value_obj != 2:
-                    post.dislikes += 1
-                    post.likes -= 1
-                upref.save()
-                post.save()
-                context = {'post': post, 'post_id': post_id}
-                return render(request, 'post_detail.html', context)
-            elif value_obj == user_preference:
-                obj.delete()
-                if user_preference == 1:
-                    post.likes -= 1
-                elif user_preference == 2:
-                    post.dislikes -= 1
-                post.save()
-                context = {'post': post, 'post_id': post_id}
-                return render(request, 'post_detail.html', context)
-        except Preference.DoesNotExist:
-            upref = Preference()
-            upref.user = request.user
-            upref.post = post
-            upref.value = user_preference
-            user_preference = int(user_preference)
-            if user_preference == 1:
-                post.likes += 1
-            elif user_preference == 2:
-                post.dislikes += 1
-            upref.save()
-            post.save()
-            context = {'post': post, 'post_id': post_id}
-            return render(request, 'post_detail.html', context)
-    else:
-        post = get_object_or_404(Post, id=post_id)
-        context = {'post': post, 'post_id': post_id}
-        return render(request, 'post_detail.html', context)
 
 
 def about(request):

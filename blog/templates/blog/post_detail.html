@@ -11,33 +11,23 @@
         <p class="article-content">{{ object.content }}</p>
         {% if object.author == user %}
         <div>
+            <a class="btn btn-primary btn-sm mt-1 mb-1" href="{% url 'post-like-toggle' pk=post.pk %}"><i
+                class="far fa-thumbs-up"></i> {{ object.likes.count }} Like</a>
             <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'post-update' object.id %}"><i
                     class="far fa-edit"></i> Edit</a>
             <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'post-delete' object.id %}"><i
                     class="fas fa-trash"></i> Delete</a>
-            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'post-add-comment' pk=post.pk %}"><i
+            <a class="btn btn-info btn-sm mt-1 mb-1" href="{% url 'post-add-comment' pk=post.pk %}"><i
                     class="fa fa-comment-dots"></i> Comment</a>
         </div>
         {% elif user.is_authenticated %}
         <div>
-            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'post-add-comment' pk=post.pk %}"><i
+            <a class="btn btn-primary btn-sm mt-1 mb-1" href="{% url 'post-like-toggle' pk=post.pk %}"><i
+                class="far fa-thumbs-up"></i> {{ object.likes.count }} Like</a>
+            <a class="btn btn-info btn-sm mt-1 mb-1" href="{% url 'post-add-comment' pk=post.pk %}"><i
                     class="far fa-comment-dots"></i> Comment</a>
         </div>
         {% endif %}
-        <!-- <div class="form-group">
-            <button class="btn btn-success" type="submit">Like</button>
-            <button class="btn btn-danger" type="submit">Dislike</button>
-        </div> -->
-        <!-- <form id="likebutton" method="POST" action="/posts/{{eachpost.id}}/preference/1/">
-            {% csrf_token %}
-            <input type="hidden">
-        </form>
-        
-        <form id="dislikebutton" method="POST" action="/posts/{{eachpost.id}}/preference/2/">
-            {% csrf_token %}
-            <input type="hidden">
-        </form> -->
-
     </div>
 </article>
 

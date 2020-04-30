@@ -1,12 +1,18 @@
 from django.db import models
 from PIL import Image
 from django.utils import timezone
-# from utils.url_short import URL_Shortener
-from hashids import Hashids
-hashids = Hashids()
+
+class Author(models.Model):
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    about = models.TextField()
+
+    def __str__(self):
+        return "{} {}".format(self.first_name, self.last_name)
+
 
 class Book(models.Model):
-    author = models.CharField(max_length=100)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     genre = models.CharField(max_length=50)
     pages = models.IntegerField(default=0)
@@ -18,7 +24,7 @@ class Book(models.Model):
     # TODO add rating here
 
     def __str__(self):
-        return self.title + "-" + self.author
+        return self.title + "-" + self.author.first_name + " " + self.author.last_name
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

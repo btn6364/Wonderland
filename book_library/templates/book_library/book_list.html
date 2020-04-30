@@ -1,5 +1,10 @@
 {% extends "blog/base.html" %}
 {% block content %}
+    <form method="GET" action="">
+        <input type="text" name="query" placeholder="Search books, authors...">
+        <input type="submit" value="Search">
+    </form>
+    <br>
     {% for book in books %}
         <article class="media content-section">
             <img class="book-cover" src="{{ book.image.url }}" alt="">

@@ -1,0 +1,16 @@
+{% extends "blog/base.html" %}
+{% block content %}
+    {% for book in books %}
+        <article class="media content-section">
+            <img class="book-cover" src="{{ book.image.url }}" alt="">
+            <div class="media-body">
+                <div class="article-metadata">
+                    <a class="mr-2" href="#">{{ book.author }}</a>
+                    <!-- Add rating here -->
+                </div>
+                <h3>{{ book.title }}</h3>
+                <a class="article-title" href="{% url 'book_detail' pk=book.pk %}">Click here for detail review</a>
+            </div>
+        </article>
+    {% endfor %}
+{% endblock %}

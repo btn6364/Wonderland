@@ -80,7 +80,7 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return False
 
 
-#view for add likes
+#view for toggle likes
 class PostLikeToggleRedirect(LoginRequiredMixin ,RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         post = get_object_or_404(Post, pk=kwargs["pk"])

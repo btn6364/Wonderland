@@ -1,0 +1,19 @@
+{% extends "blog/base.html" %}
+{% block content %}
+<article class="media content-section">
+    <div class="media-body">
+        <div class="article-metadata">
+            <a class="mr-2" href="#">{{ book.author }}</a>
+            <small class="text-muted">Published on: {{ book.published_date|date:"F d, Y" }}</small>
+        </div>
+        <h3 class="article-title">{{ book.title }}</h3>
+        <ul class="">
+            <li>Genre: {{ book.genre }}</li>
+            <li>Pages: {{ book.pages }}</li>
+            <li>Price: ${{ book.price }}</li>
+            <li>Source: <a href="{{ book.source }}" target="_blank" >{{ book.source }}</a></li>
+            <li>Description: <p class="article-content">{{ book.description }}</p></li>
+        </ul>
+    </div>
+</article>
+{% endblock %}

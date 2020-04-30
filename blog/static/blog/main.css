@@ -88,6 +88,9 @@ body {
   margin: 20px 0px 20px 20px;
 }
 
-.mainlogo {
-  font-family: 'Orbitron', sans-serif;
+
+.book-cover {
+  height: 86px;
+  width: 65px;
+  margin-right: 16px;
 }

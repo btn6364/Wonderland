@@ -1,6 +1,8 @@
 from django.db import models
 from PIL import Image
 from django.utils import timezone
+from django.contrib.auth.models import User
+from django.urls import reverse
 
 class Author(models.Model):
     first_name = models.CharField(max_length=50)
@@ -21,10 +23,14 @@ class Book(models.Model):
     source = models.URLField(max_length=250)
     published_date = models.DateTimeField(default=timezone.now)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
-    # TODO add rating here
+    favorites = models.ManyToManyField(User, blank=True, related_name="book_favorites")
 
     def __str__(self):
         return self.title + "-" + self.author.first_name + " " + self.author.last_name
+
+    def get_absolute_url(self):
+        return reverse("book_detail", kwargs={"pk": self.pk})
+
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

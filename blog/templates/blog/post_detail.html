@@ -41,7 +41,7 @@
                     <span class="text-muted pull-right">
                         <small class="date text-muted font-weight-normal">{{ comment.created_date }}</small>
                     </span>
-                    <a href="#"><strong class="text-success">@{{ comment.author.username }}</strong></a>
+                    <a href="{% url 'user-posts' comment.author.username %}"><strong class="text-success">@{{ comment.author.username }}</strong></a>
                     <p>
                         {{ comment.text|linebreaks }}
                     </p>

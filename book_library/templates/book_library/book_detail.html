@@ -14,6 +14,12 @@
             <li>Source: <a href="{{ book.source }}" target="_blank" >wonderland.com/hyperlink</a></li>
             <li>Description: <p class="article-content">{{ book.description }}</p></li>
         </ul>
+        {% if user.is_authenticated %}
+            <div>
+                <a class="btn btn-primary btn-sm mt-1 mb-1" href="{% url 'book_favorite' pk=book.pk %}"><i
+                    class="far fa-heart"></i>  Add to Favorite</a>
+            </div>
+        {% endif %}
     </div>
 </article>
 {% endblock %}

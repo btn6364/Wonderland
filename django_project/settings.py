@@ -25,7 +25,7 @@ SECRET_KEY = 't2k*=!q&=6o$pu47b@hz3*w6#27y(w%hipum%q=ohh2%8k1v70'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['wonderlandapp.herokuapp.com']
 
 
 # Application definition
